@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { Reservation } from "./reservation.entity";
+import { Reservation } from "../../reservations/entities/reservation.entity";
 
 @Entity()
 export class Resources {

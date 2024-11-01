@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { Resources } from "./resourses.entity";
+import { Resources } from "../../resources/entities/resource.entity";
 
 @Entity()
 export class Reservation {
