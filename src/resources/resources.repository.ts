@@ -11,24 +11,24 @@ export class ResourcesRepository {
         @InjectRepository(Resources) private readonly resourcesRepository: Repository<Resources>,
     ) {}
 
-    findAll() {
-        return this.resourcesRepository.find();
+    async findAll() {
+        return await this.resourcesRepository.find();
     }
 
-    findOne(id: string) {
-        return this.resourcesRepository.findOneBy({ id });
+    async findOne(id: string) {
+        return await this.resourcesRepository.findOneBy({ id });
     }
     
-    create(createResourceDto: CreateResourceDto) {
-        const resource = this.resourcesRepository.create(createResourceDto);
-        return this.resourcesRepository.save(resource);
+    async create(createResourceDto: CreateResourceDto) {
+        const resource = await this.resourcesRepository.create(createResourceDto);
+        return await this.resourcesRepository.save(resource);
     }
 
-    update(id: string, updateResourceDto: UpdateResourceDto) {
-        return this.resourcesRepository.update({ id }, updateResourceDto);
+    async update(id: string, updateResourceDto: UpdateResourceDto) {
+        return await this.resourcesRepository.update({ id }, updateResourceDto);
     }
 
-    delete(id: string) {
-        return this.resourcesRepository.delete({ id });
+    async delete(id: string) {
+        return await this.resourcesRepository.delete({ id });
     }
 }
