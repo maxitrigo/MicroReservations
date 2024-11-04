@@ -8,7 +8,7 @@ export class Reservation {
     id: string = uuidv4()
 
     @Column()
-    date: Date
+    date: string
 
     @Column()
     time: string

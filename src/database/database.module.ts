@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import typeormConfig from '../config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DB_DATABASE_NAME, DB_HOST, DB_PASSWORD, DB_PORT, DB_TYPE, DB_USERNAME } from 'src/config/env.config';
+
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-          type: DB_TYPE as any, // o 'mysql', 'sqlite', etc.
-          host: DB_HOST,
-          port: DB_PORT, // Cambia el puerto según tu base de datos
-          username: DB_USERNAME,
-          password: DB_PASSWORD,
-          database: DB_DATABASE_NAME,
-          entities: ['dist/**/*.entity{.ts,.js}'],
-          migrations: ['dist/migrations/*{.ts,.js}'],
-          synchronize: false, // No usar en producción
-          migrationsRun: true
-        }),
+      ConfigModule.forRoot({
+        isGlobal: true,
+        load: [typeormConfig]
+      }),
+      TypeOrmModule.forRootAsync({
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) =>
+          configService.get('typeorm'), // Inyectás la configuración de 'typeorm'
+        })
       ],
+      exports: []
 })
 export class DatabaseModule {}

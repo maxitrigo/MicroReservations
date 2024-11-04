@@ -8,12 +8,6 @@ export class Resources {
     id: string = uuidv4()
 
     @Column()
-    date: Date
-
-    @Column()
-    time: string
-
-    @Column()
     duration: number
 
     @Column()
