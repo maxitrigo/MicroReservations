@@ -179,7 +179,7 @@ export class ReservationsService {
           throw new UnauthorizedException('You are not authorized to delete this reservation');
         }
       }
-      throw new UnauthorizedException('You are not authorized to delete this reservation');
+      throw new UnauthorizedException('You are not authorized to delete this reservation!');
     } else {
       console.log('No se puede cancelar la reserva (menos de 2 horas antes)');
       throw new Error('Cannot cancel reservation within 2 hours');
