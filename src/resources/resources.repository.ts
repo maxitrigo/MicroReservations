@@ -18,9 +18,15 @@ export class ResourcesRepository {
     async findOne(id: string) {
         return await this.resourcesRepository.findOneBy({ id });
     }
+
+    async findByGymId(gymId: string) {
+        return await this.resourcesRepository.find({
+            where: { gymId },
+        });
+    }
     
-    async create(createResourceDto: CreateResourceDto) {
-        const resource = await this.resourcesRepository.create(createResourceDto);
+    async create(createResourceDto: CreateResourceDto, gymId: string) {
+        const resource = await this.resourcesRepository.create({...createResourceDto, gymId});
         return await this.resourcesRepository.save(resource);
     }
 

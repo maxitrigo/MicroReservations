@@ -10,9 +10,9 @@ const config = {
     password: DB_PASSWORD,
     database: DB_DATABASE_NAME,
     autoLoadEntities: true,
-    synchronize: false, // No usar en producción
-    logging: true,
-    migrationsRun: true,
+    synchronize: true, // No usar en producción
+    logging: false,
+    migrationsRun: false,
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
 }

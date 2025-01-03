@@ -10,5 +10,6 @@ import { AuthGuard } from 'src/guards/auth.guard';
   imports: [TypeOrmModule.forFeature([Resources])],
   controllers: [ResourcesController],
   providers: [ResourcesService, ResourcesRepository],
+  exports:[ResourcesService]
 })
 export class ResourcesModule {}

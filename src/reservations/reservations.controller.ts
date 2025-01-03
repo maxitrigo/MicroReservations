@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Headers } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
@@ -20,14 +19,15 @@ export class ReservationsController {
   findAll(@Headers('authorization') headers: string) {
     return this.reservationsService.findAll();
   }
-  
+
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Returns reservation by id' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Get(':id')
-  findOne(@Param('id') id: string, @Headers('authorization') headers: string) {
-    return this.reservationsService.findOne(id);
+  @Get('available-times')
+  async getAvailableTimes(
+    @Query('resourceId') resourceId: string,
+    @Query('weekDays') weekDays: string[],
+    @Query('capacity') resourceCapacity: number,
+  ) {
+    return await this.reservationsService.getAvailableTimes(resourceId, weekDays, resourceCapacity);
   }
 
   @UseGuards(AuthGuard)
@@ -42,22 +42,25 @@ export class ReservationsController {
   
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Returns reservation by id' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @Get(':id')
+  findOne(@Param('id') id: string, @Headers('authorization') headers: string) {
+    return this.reservationsService.findOne(id);
+  }
+
+  
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @ApiResponse({ status: 201, description: 'Returns created reservation' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Post()
   create(@Body() createReservationDto: CreateReservationDto, @Headers('authorization') headers: string) {
-    return this.reservationsService.create(createReservationDto);
-  }
-  
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Returns updated reservation' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Headers('authorization') headers: string) {
     const token = headers.split(' ')[1];
-    return this.reservationsService.update(id, updateReservationDto, token);
+    const response = this.reservationsService.create(createReservationDto, token);
+    return response;
   }
+
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
@@ -66,6 +69,6 @@ export class ReservationsController {
   @Delete(':id')
   remove(@Param('id') id: string, @Headers('authorization') headers: string) {
     const token = headers.split(' ')[1];
-    return this.reservationsService.remove(id, token);
+    return this.reservationsService.cancel(id, token);
   }
 }

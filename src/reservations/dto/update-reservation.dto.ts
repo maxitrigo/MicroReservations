@@ -15,4 +15,7 @@ export class UpdateReservationDto extends PartialType(CreateReservationDto) {
 
     @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
     resourceId?: string;
+
+    @ApiProperty({example: 'Confirmed'})
+    status?: 'Confirmed' | 'Pending' | 'Cancelled';
 }

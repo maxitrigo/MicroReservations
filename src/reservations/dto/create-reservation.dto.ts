@@ -20,4 +20,7 @@ export class CreateReservationDto {
     @IsNotEmpty()
     @IsUUID()
     resourceId: string
+
+    @ApiProperty({example: 'Confirmed'})
+    status?: 'Confirmed' | 'Pending' | 'Cancelled';
 }
