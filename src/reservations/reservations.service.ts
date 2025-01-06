@@ -6,6 +6,7 @@ import { Roles } from 'src/Roles/roles.enum';
 import { ResourcesService } from 'src/resources/resources.service';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
+import e from 'express';
 
 @Injectable()
 export class ReservationsService {
@@ -47,14 +48,19 @@ export class ReservationsService {
     const currentTimeString = nowUTCMinus3.toISOString().slice(11, 16); // Formato 'HH:mm'
     const currentTime = currentTimeString.split(':').join('');
     const reservation = time.split(':').join('');
-  
-  
-    // Si la diferencia es menor a 2 horas, el estado es 'Pending', de lo contrario, 'Confirmed'
-    if (parseInt(currentTime) + 200 < parseInt(reservation)) {
+
+    if (date.slice(8, 10) > nowUTCMinus3.toISOString().slice(8, 10)) {
       createReservationDto.status = 'Pending';
-    } else {
-      createReservationDto.status = 'Confirmed';
+    } else if (date.slice(8, 10) === nowUTCMinus3.toISOString().slice(8, 10)) {
+      // Si la diferencia es menor a 2 horas, el estado es 'Pending', de lo contrario, 'Confirmed'
+      if (parseInt(currentTime) + 200 < parseInt(reservation)) {
+        createReservationDto.status = 'Pending';
+      } else {
+        createReservationDto.status = 'Confirmed';
+      }
     }
+  
+  
   
     // Crear la reserva
     return await this.reservationsRepository.create(createReservationDto);
