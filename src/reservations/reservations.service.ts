@@ -169,7 +169,7 @@ export class ReservationsService {
       const userId = decode.id;
   
       if (userId === reservation.userId || role === Roles.Admin) {
-        const response = await axios.post('http://localhost:3000/users/cancel-reservations',{}, {
+        const response = await axios.post('https://gym.gym-metrics.com/users/cancel-reservations',{}, {
           headers: { Authorization: `Bearer ${token}` }
         })
         if (response.data) {
