@@ -52,7 +52,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -i /tmp/ec2_key.pem -o StrictHostKeyChecking=no ubuntu@ec2-54-233-95-55.sa-east-1.compute.amazonaws.com << 'EOF'
+          ssh -i /tmp/ec2_key.pem -o StrictHostKeyChecking=no ubuntu@ec2-18-230-217-170.sa-east-1.compute.amazonaws.com << 'EOF'
             echo "Iniciando sesión en EC2..."
 
             echo "ir a la carpeta raiz"

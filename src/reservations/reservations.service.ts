@@ -160,8 +160,9 @@ export class ReservationsService {
   
     // Obtener la fecha y hora local actual
     const now = new Date();
-    const dateNow = now.toISOString().slice(0, 10);  // Fecha actual en formato 'YYYY-MM-DD'
-    const timeNow = now.getHours() * 60 + now.getMinutes();  // Hora actual en minutos desde medianoche
+    const nowUTCMinus3 = new Date(now.getTime() - (3 * 60 * 60 * 1000)); // Restamos 3 horas para UTC-3
+    const dateNow = nowUTCMinus3.toISOString().slice(0, 10);  // Fecha actual en formato 'YYYY-MM-DD'
+    const timeNow = nowUTCMinus3.getHours() * 60 + nowUTCMinus3.getMinutes();  // Hora actual en minutos desde medianoche
   
     // Obtener la hora de la reserva en minutos desde medianoche
     const [reservationHour, reservationMinute] = reservationTime.split(':').map(Number);
@@ -169,7 +170,7 @@ export class ReservationsService {
   
     // Verificar si la fecha de la reserva es igual o posterior a la fecha actual
     // y si la diferencia entre la hora actual y la hora de la reserva es de al menos 2 horas
-    if (reservationDate >= dateNow && reservationTimeInMinutes - timeNow >= 120) {
+    if (reservationDate > dateNow || reservationDate === dateNow && reservationTimeInMinutes - timeNow >= 120) {
       const decode = this.jwtService.decode(token);
       const role = decode.role;
       const userId = decode.id;
